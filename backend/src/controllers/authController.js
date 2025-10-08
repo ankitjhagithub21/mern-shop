@@ -21,12 +21,17 @@ const registerUser = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: '30d',
     });
-    res.status(201).json({
+
+    res.cookie('token',token,{
+        httpOnly:true,
+        secure:true,
+        sameSite:"none",
+        maxAge:30*24*60*60*1000 // 30 days
+    }).status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
-      token,
+      isAdmin: user.isAdmin
     });
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
@@ -44,12 +49,17 @@ const loginUser = async (req, res) => {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: '30d',
       });
-      res.json({
+
+      res.cookie('token',token,{
+         httpOnly:true,
+         secure:true,
+         sameSite:"none",
+         maxAge:30*24*60*60*1000
+      }).json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        isAdmin: user.isAdmin,
-        token,
+        isAdmin: user.isAdmin
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
