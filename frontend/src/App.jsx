@@ -11,6 +11,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import Dashboard from './admin/Dashboard'
 import AddProduct from './admin/AddProduct'
 import AdminProducts from './admin/AdminProducts'
+import AdminDashboard from './admin/AdminDashboard'
 
 function App() {
   
@@ -35,9 +36,13 @@ function App() {
       path: "/admin",
       element: <Dashboard/>,
       children: [
+         {
+          path: "",
+          element: <AdminDashboard/>
+        },
         {
           path: "dashboard",
-          element: <div>Admin Dashboard</div>
+          element: <AdminDashboard/>
         },
         {
           path: "add-product",
