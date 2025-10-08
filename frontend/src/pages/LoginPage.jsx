@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate()
+
+  const {setUser} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +29,7 @@ const LoginPage = () => {
         setError(data.message || 'Login failed');
       } else {
         // handle login success (e.g., save token, redirect)
+        setUser(data)
         toast.success(`Welcome back ${data.name}`)
         navigate("/")
 

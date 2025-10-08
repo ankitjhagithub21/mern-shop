@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
  
   const navigate = useNavigate()
+  const {setUser} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +36,7 @@ const RegisterPage = () => {
       if (!res.ok) {
         setError(data.message || 'Registration failed');
       } else {
+        setUser(data)
          toast.success("Account created successfully.")
          navigate("/")
       }
