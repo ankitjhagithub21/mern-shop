@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-
+import { useParams,useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -24,6 +25,31 @@ const ProductDetails = () => {
     };
     fetchProduct();
   }, [id]);
+
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ productId: product._id, quantity: 1 }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message || 'Failed to add to cart');
+      } else {
+        toast.success("Product added to cart")
+        navigate("/cart")
+        // Optionally show success message or update cart state
+      }
+    } catch {
+      toast.error('Something went wrong');
+    }
+   
+  };
 
   if (loading) {
     return (
@@ -64,6 +90,7 @@ const ProductDetails = () => {
           <span className="badge badge-outline">{product.countInStock} in stock</span>
         </div>
         <button
+        onClick={handleAddToCart}
           className="btn btn-primary btn-block"
           disabled={product.countInStock === 0}
         >

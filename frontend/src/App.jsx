@@ -13,6 +13,7 @@ import AddProduct from './admin/AddProduct'
 import AdminProducts from './admin/AdminProducts'
 import AdminDashboard from './admin/AdminDashboard'
 import ProductDetails from './pages/ProductDetails'
+import CartPage from './pages/CartPage'
 
 function App() {
   
@@ -25,6 +26,14 @@ function App() {
         <HomePage/>
       </>
     },
+     {
+      path: "/cart",
+      element: <>
+        <Navbar/>
+        <CartPage/>
+      </>
+    },
+
       {
       path: "/product/:id",
       element: <>
