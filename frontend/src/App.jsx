@@ -8,24 +8,46 @@ import Navbar from './components/Navbar'
 import { AuthProvider } from './context/AuthContext' // add this import
 import NotFoundPage from './pages/NotFoundPage'
 
+import Dashboard from './admin/Dashboard'
+import AddProduct from './admin/AddProduct'
+import AdminProducts from './admin/AdminProducts'
+
 function App() {
   
 
   const router = createBrowserRouter([
     {
-      path:"/",
-      element:<>
-      <Navbar/>
-      <HomePage/>
+      path: "/",
+      element: <>
+        <Navbar/>
+        <HomePage/>
       </>
     },
-     {
-      path:"/login",
-      element:<LoginPage/>
+    {
+      path: "/login",
+      element: <LoginPage/>
     },
     {
-      path:"/register",
-      element:<RegisterPage/>
+      path: "/register",
+      element: <RegisterPage/>
+    },
+    {
+      path: "/admin",
+      element: <Dashboard/>,
+      children: [
+        {
+          path: "dashboard",
+          element: <div>Admin Dashboard</div>
+        },
+        {
+          path: "add-product",
+          element: <AddProduct/>
+        },
+        {
+          path: "products",
+          element: <AdminProducts/>
+        }
+      ]
     },
     {
       path: "*",
