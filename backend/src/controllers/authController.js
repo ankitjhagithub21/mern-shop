@@ -85,8 +85,22 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Public
+const logoutUser = (req, res) => {
+  res.cookie('token', '', {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0),
+  });
+  res.json({ message: 'Logged out successfully' });
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  logoutUser,
 };
