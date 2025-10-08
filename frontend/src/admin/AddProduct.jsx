@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const AddProduct = () => {
   const [name, setName] = useState('');
@@ -25,17 +26,17 @@ const AddProduct = () => {
         body: JSON.stringify({
           name,
           description,
-          price,
+          price: parseFloat(price),
           thumbnail,
           category,
-          countInStock,
+          countInStock: parseInt(countInStock, 10),
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.message || 'Failed to add product');
       } else {
-        setSuccess('Product added successfully!');
+       toast.success("Product added successfully.")
         setName('');
         setDescription('');
         setPrice('');
@@ -50,97 +51,125 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-8 bg-base-100 rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-6 text-center">Add New Product</h2>
-      {error && <div className="alert alert-error mb-4 py-2">{error}</div>}
-      {success && <div className="alert alert-success mb-4 py-2">{success}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-control mb-4">
+    <div className="max-w-2xl w-full mx-auto p-4 sm:p-6 md:p-8 bg-base-100 rounded-lg shadow-md">
+     
+      {error && (
+        <div className="alert alert-error mb-4 py-2 px-3 text-sm sm:text-base break-words">
+          {error}
+        </div>
+      )}
+     
+
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+        {/* Product Name */}
+        <div className="form-control">
           <label className="label">
-            <span className="label-text">Product Name</span>
+            <span className="label-text text-sm sm:text-base">Product Name</span>
           </label>
           <input
             type="text"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             required
             disabled={loading}
+            placeholder="Enter product name"
           />
         </div>
-        <div className="form-control mb-4">
+
+        {/* Description */}
+        <div className="form-control">
           <label className="label">
-            <span className="label-text">Description</span>
+            <span className="label-text text-sm sm:text-base">Description</span>
           </label>
           <textarea
-            className="textarea textarea-bordered"
+            className="textarea textarea-bordered w-full resize-none h-24 sm:h-32"
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             required
             disabled={loading}
-          />
+            placeholder="Describe the product"
+          ></textarea>
         </div>
-        <div className="form-control mb-4">
+
+        {/* Price */}
+        <div className="form-control">
           <label className="label">
-            <span className="label-text">Price</span>
+            <span className="label-text text-sm sm:text-base">Price ($)</span>
           </label>
           <input
             type="number"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             value={price}
-            onChange={e => setPrice(e.target.value)}
+            onChange={(e) => setPrice(e.target.value)}
             required
             min="0"
+            step="0.01"
             disabled={loading}
+            placeholder="0.00"
           />
         </div>
-        <div className="form-control mb-4">
+
+        {/* Thumbnail URL */}
+        <div className="form-control">
           <label className="label">
-            <span className="label-text">Thumbnail URL</span>
+            <span className="label-text text-sm sm:text-base">Thumbnail URL</span>
           </label>
           <input
-            type="text"
-            className="input input-bordered"
+            type="url"
+            className="input input-bordered w-full"
             value={thumbnail}
-            onChange={e => setThumbnail(e.target.value)}
+            onChange={(e) => setThumbnail(e.target.value)}
             required
             disabled={loading}
+            placeholder="https://example.com/image.jpg"
           />
         </div>
-        <div className="form-control mb-4">
+
+        {/* Category */}
+        <div className="form-control">
           <label className="label">
-            <span className="label-text">Category</span>
+            <span className="label-text text-sm sm:text-base">Category</span>
           </label>
           <input
             type="text"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             value={category}
-            onChange={e => setCategory(e.target.value)}
+            onChange={(e) => setCategory(e.target.value)}
             required
             disabled={loading}
+            placeholder="e.g. Electronics, Books"
           />
         </div>
-        <div className="form-control mb-6">
+
+        {/* Count In Stock */}
+        <div className="form-control">
           <label className="label">
-            <span className="label-text">Count In Stock</span>
+            <span className="label-text text-sm sm:text-base">Count In Stock</span>
           </label>
           <input
             type="number"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             value={countInStock}
-            onChange={e => setCountInStock(e.target.value)}
+            onChange={(e) => setCountInStock(e.target.value)}
             required
             min="0"
             disabled={loading}
+            placeholder="0"
           />
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className={`btn btn-primary w-full${loading ? ' btn-disabled' : ''}`}
+          className={`btn btn-primary w-full mt-6 ${loading ? 'btn-disabled' : ''}`}
           disabled={loading}
         >
           {loading ? (
-            <span className="loading loading-spinner loading-sm"></span>
+            <>
+              <span className="loading loading-spinner"></span>
+              <span className="ml-2">Adding...</span>
+            </>
           ) : (
             'Add Product'
           )}

@@ -42,8 +42,9 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <h2 className="text-xl font-bold mb-4">Products</h2>
+    <div className='p-5'>
+      <div className="overflow-x-auto">
+      
       {loading ? (
         <div className="flex justify-center items-center py-8">
           <span className="loading loading-spinner loading-lg"></span>
@@ -91,6 +92,7 @@ const AdminProducts = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
