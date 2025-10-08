@@ -12,6 +12,7 @@ import Dashboard from './admin/Dashboard'
 import AddProduct from './admin/AddProduct'
 import AdminProducts from './admin/AdminProducts'
 import AdminDashboard from './admin/AdminDashboard'
+import ProductDetails from './pages/ProductDetails'
 
 function App() {
   
@@ -22,6 +23,13 @@ function App() {
       element: <>
         <Navbar/>
         <HomePage/>
+      </>
+    },
+      {
+      path: "/product/:id",
+      element: <>
+        <Navbar/>
+        <ProductDetails/>
       </>
     },
     {
