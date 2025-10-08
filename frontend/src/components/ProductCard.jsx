@@ -1,9 +1,17 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const ProductCard = ({ product }) => {
+
+  const navigate = useNavigate();
+
+  const handleView = () => {
+    navigate(`/product/${product._id}`)
+  }
+
   return (
-    <Link to={`/product/${product._id}`} className="block">
-      <div className="card bg-base-100 shadow hover:scale-110 rounded-lg hover:shadow-lg transition">
+    
+      <div className="card bg-base-100 shadow hover:scale-105 rounded-lg hover:shadow-lg transition">
         <figure className="px-4 pt-4">
           <img
             src={product.thumbnail}
@@ -26,13 +34,14 @@ const ProductCard = ({ product }) => {
           </div>
           <button
             className="btn btn-primary btn-block mt-4"
-            onClick={e => e.preventDefault()}
+            onClick={handleView}
+            
           >
-            Add to Cart
+           View Product
           </button>
         </div>
       </div>
-    </Link>
+    
   );
 };
 

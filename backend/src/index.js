@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const connectDB = require('./config/db')
 const productRoutes = require('./routes/productRoutes')
 const authRoutes = require('./routes/authRoutes')
+const cartRoutes = require('./routes/cartRoutes')
 const app = express()
 const port = process.env.PORT || 8000
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/cart', cartRoutes)
 
 
 app.listen(port, () => {
