@@ -1,36 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCartStore } from "../store/useCartStore";
 
 const CartPage = () => {
-  const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { cart, setCart } = useCartStore();
+  const [loading, setLoading] = useState(false); // loading can be managed globally if needed
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const fetchCart = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
-        credentials: "include",
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Failed to fetch cart");
-      } else {
-        setCart(data.products);
-      }
-    } catch {
-      setError("Something went wrong");
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
   const handleQuantityChange = async (productId, quantity) => {
     if (quantity < 1) return;
+   
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/cart/${productId}`,
@@ -42,13 +22,16 @@ const CartPage = () => {
         }
       );
       const data = await res.json();
-      console.log("Update response data:", data);
       if (res.ok) setCart(data.products);
-    } catch {}
+    } catch {
+      setError("Something went wrong");
+    }
+    
   };
 
   const handleRemove = async (productId) => {
     if (!window.confirm("Remove this item from cart?")) return;
+   
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/cart/${productId}`,
@@ -59,7 +42,10 @@ const CartPage = () => {
       );
       const data = await res.json();
       if (res.ok) setCart(data.products);
-    } catch {}
+    } catch {
+      setError("Something went wrong");
+    }
+   
   };
 
   const subtotal = cart?.reduce(
@@ -165,3 +151,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+         
