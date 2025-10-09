@@ -50,10 +50,10 @@ const updateCartItem = async (req, res) => {
   const { quantity } = req.body;
   const { productId } = req.params;
   try {
-    const cart = await Cart.findOne({ user: req.user._id });
+    const cart = await Cart.findOne({ user: req.user._id }).populate('products.product');
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
 
-    const item = cart.products.find(p => p.product.toString() === productId);
+    const item = cart.products.find(p => p.product._id.toString() === productId);
     if (!item) return res.status(404).json({ message: 'Product not in cart' });
 
     item.quantity = quantity;

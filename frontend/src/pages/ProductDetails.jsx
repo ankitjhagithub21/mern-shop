@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams,useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const {user} = useAuth()
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -29,6 +31,7 @@ const ProductDetails = () => {
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
+    if(!user) return toast.error("You are not logged in.")
     
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {

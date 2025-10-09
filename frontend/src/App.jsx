@@ -20,8 +20,15 @@ import AdminLayout from './layouts/AdminLayout';
 
 function AdminRoute() {
   const { user, loading } = useAuth();
-  if (loading) return <HomePage/>;
+  if (loading) return <HomePage />;
   if (!user || !user.isAdmin) return <Navigate to="/" replace />;
+  return <Outlet />;
+}
+
+function PrivateRoute() {
+  const { user, loading } = useAuth();
+  if (loading) return <HomePage />;
+  if (!user) return <Navigate to="/" replace />;
   return <Outlet />;
 }
 
@@ -35,7 +42,13 @@ function App() {
     },
     {
       path: "/cart",
-      element: <UserLayout><CartPage/></UserLayout>
+      element: <PrivateRoute />,
+      children: [
+        {
+          path: "",
+          element: <UserLayout><CartPage/></UserLayout>
+        }
+      ]
     },
     {
       path: "/product/:id",

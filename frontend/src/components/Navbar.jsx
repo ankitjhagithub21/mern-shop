@@ -12,7 +12,8 @@ const Navbar = () => {
         <Link to="/" className="btn btn-ghost text-xl">MERN Shop</Link>
       </div>
       <div className="flex gap-5 items-center">
-        <div className="dropdown dropdown-end">
+        {
+           user && <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
@@ -52,6 +53,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        }
         {user ? (
           <div className="dropdown dropdown-end">
             <div

@@ -1,59 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const CartPage = () => {
-  const [cart, setCart] = useState({ products: [] });
+  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-   const fetchCart = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
-          credentials: 'include',
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          setError(data.message || 'Failed to fetch cart');
-        } else {
-          setCart(data);
-        }
-      } catch {
-        setError('Something went wrong');
+  const fetchCart = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      
+      if (!res.ok) {
+        setError(data.message || "Failed to fetch cart");
+      } else {
+        setCart(data.products);
+       
       }
-      setLoading(false);
-    };
+    } catch {
+      setError("Something went wrong");
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-   
     fetchCart();
   }, []);
 
   const handleQuantityChange = async (productId, quantity) => {
     if (quantity < 1) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/cart/${productId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ quantity }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/cart/${productId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ quantity }),
+        }
+      );
       const data = await res.json();
-      if (res.ok) fetchCart();
+      console.log("Update response data:", data);
+      if (res.ok) setCart(data.products);
     } catch {}
   };
 
   const handleRemove = async (productId) => {
-    if (!window.confirm('Remove this item from cart?')) return;
+    if (!window.confirm("Remove this item from cart?")) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/cart/${productId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/cart/${productId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
       const data = await res.json();
-      if (res.ok) setCart(data);
+      if (res.ok) setCart(data.products);
     } catch {}
   };
 
-  const subtotal = cart.products.reduce(
+  const subtotal = cart?.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
@@ -67,8 +75,10 @@ const CartPage = () => {
         </div>
       ) : error ? (
         <div className="alert alert-error">{error}</div>
-      ) : cart.products.length === 0 ? (
-        <div className="text-center text-gray-500 py-12">Your cart is empty.</div>
+      ) : cart.length === 0 ? (
+        <div className="text-center text-gray-500 py-12">
+          Your cart is empty.
+        </div>
       ) : (
         <div className="bg-base-100 rounded-lg shadow p-4">
           <table className="table w-full">
@@ -82,7 +92,7 @@ const CartPage = () => {
               </tr>
             </thead>
             <tbody>
-              {cart.products.map(item => (
+              {cart.map((item) => (
                 <tr key={item.product._id}>
                   <td className="flex items-center gap-2">
                     <img
@@ -98,7 +108,10 @@ const CartPage = () => {
                       <button
                         className="btn btn-xs btn-outline"
                         onClick={() =>
-                          handleQuantityChange(item.product._id, item.quantity - 1)
+                          handleQuantityChange(
+                            item.product._id,
+                            item.quantity - 1
+                          )
                         }
                         disabled={item.quantity <= 1}
                       >
@@ -108,7 +121,10 @@ const CartPage = () => {
                       <button
                         className="btn btn-xs btn-outline"
                         onClick={() =>
-                          handleQuantityChange(item.product._id, item.quantity + 1)
+                          handleQuantityChange(
+                            item.product._id,
+                            item.quantity + 1
+                          )
                         }
                       >
                         +
