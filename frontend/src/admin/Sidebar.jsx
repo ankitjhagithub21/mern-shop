@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   PackagePlus,
@@ -8,16 +8,24 @@ import {
   User2,
   Settings2
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
+  const {logout} = useAuth() 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login"); // Redirect to login page after logout
+  };
   return (
     <div className="drawer-side">
       <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
       <aside className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-        <div className="mb-8 flex items-center gap-2">
+        <Link to={"/admin/dashboard"} className="mb-8 flex items-center gap-2">
           <LayoutDashboard className="w-7 h-7 text-primary" />
           <span className="text-xl font-bold">Admin Dashboard</span>
-        </div>
+        </Link>
         <ul>
           <li>
             <Link to="/admin/dashboard">
@@ -51,7 +59,7 @@ const Sidebar = () => {
           </li>
         </ul>
         <div className="mt-auto pt-8">
-          <button className="btn btn-outline btn-error w-full flex items-center justify-center gap-2">
+          <button onClick={handleLogout} className="btn btn-outline btn-error w-full flex items-center justify-center gap-2">
             <LogOut className="w-5 h-5" />
             Logout
           </button>

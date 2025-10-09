@@ -4,8 +4,7 @@ import {Toaster} from "react-hot-toast"
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-import Navbar from './components/Navbar'
-import { AuthProvider } from './context/AuthContext' // add this import
+import { AuthProvider, useAuth } from './context/AuthContext' // add this import
 import NotFoundPage from './pages/NotFoundPage'
 
 import Dashboard from './admin/Dashboard'
@@ -14,6 +13,16 @@ import AdminProducts from './admin/AdminProducts'
 import AdminDashboard from './admin/AdminDashboard'
 import ProductDetails from './pages/ProductDetails'
 import CartPage from './pages/CartPage'
+import { Navigate, Outlet } from 'react-router-dom'
+import UserLayout from './layouts/UserLayout';
+import AdminLayout from './layouts/AdminLayout';
+
+function AdminRoute() {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="flex justify-center py-20"><span className="loading loading-spinner loading-lg"></span></div>;
+  if (!user || !user.isAdmin) return <Navigate to="/" replace />;
+  return <Outlet />;
+}
 
 function App() {
   
@@ -21,25 +30,15 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <>
-        <Navbar/>
-        <HomePage/>
-      </>
+      element: <UserLayout><HomePage/></UserLayout>
     },
-     {
+    {
       path: "/cart",
-      element: <>
-        <Navbar/>
-        <CartPage/>
-      </>
+      element: <UserLayout><CartPage/></UserLayout>
     },
-
-      {
+    {
       path: "/product/:id",
-      element: <>
-        <Navbar/>
-        <ProductDetails/>
-      </>
+      element: <UserLayout><ProductDetails/></UserLayout>
     },
     {
       path: "/login",
@@ -51,23 +50,23 @@ function App() {
     },
     {
       path: "/admin",
-      element: <Dashboard/>,
+      element: <AdminRoute />,
       children: [
-         {
+        {
           path: "",
-          element: <AdminDashboard/>
+          element: <AdminLayout><AdminDashboard/></AdminLayout>
         },
         {
           path: "dashboard",
-          element: <AdminDashboard/>
+          element: <AdminLayout><AdminDashboard/></AdminLayout>
         },
         {
           path: "add-product",
-          element: <AddProduct/>
+          element: <AdminLayout><AddProduct/></AdminLayout>
         },
         {
           path: "products",
-          element: <AdminProducts/>
+          element: <AdminLayout><AdminProducts/></AdminLayout>
         }
       ]
     },
