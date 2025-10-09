@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const fetchCart = async () => {
     try {
@@ -11,12 +13,11 @@ const CartPage = () => {
         credentials: "include",
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         setError(data.message || "Failed to fetch cart");
       } else {
         setCart(data.products);
-       
       }
     } catch {
       setError("Something went wrong");
@@ -150,7 +151,12 @@ const CartPage = () => {
             </div>
           </div>
           <div className="flex justify-end mt-4">
-            <button className="btn btn-primary">Proceed to Checkout</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate("/checkout")}
+            >
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       )}

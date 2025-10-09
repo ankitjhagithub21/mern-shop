@@ -17,6 +17,7 @@ import CartPage from './pages/CartPage'
 import { Navigate, Outlet } from 'react-router-dom'
 import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
+import CheckoutPage from './pages/CheckoutPage'
 
 function AdminRoute() {
   const { user, loading } = useAuth();
@@ -39,6 +40,10 @@ function App() {
     {
       path: "/",
       element: <UserLayout><HomePage/></UserLayout>
+    },
+      {
+      path: "/checkout",
+      element: <UserLayout><CheckoutPage/></UserLayout>
     },
     {
       path: "/cart",
