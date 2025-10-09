@@ -4,10 +4,11 @@ import {Toaster} from "react-hot-toast"
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+
 import { AuthProvider, useAuth } from './context/AuthContext' // add this import
 import NotFoundPage from './pages/NotFoundPage'
 
-import Dashboard from './admin/Dashboard'
+
 import AddProduct from './admin/AddProduct'
 import AdminProducts from './admin/AdminProducts'
 import AdminDashboard from './admin/AdminDashboard'
@@ -19,7 +20,7 @@ import AdminLayout from './layouts/AdminLayout';
 
 function AdminRoute() {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex justify-center py-20"><span className="loading loading-spinner loading-lg"></span></div>;
+  if (loading) return <HomePage/>;
   if (!user || !user.isAdmin) return <Navigate to="/" replace />;
   return <Outlet />;
 }
