@@ -68,7 +68,7 @@ const ProductDetails = () => {
         <div className="alert alert-error">{error || 'Product not found'}</div>
       </div>
     );
-  }
+}
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-8 bg-base-100 rounded-lg shadow">
@@ -89,7 +89,7 @@ const ProductDetails = () => {
         </div>
         <p className="mb-6">{product.description}</p>
         <div className="flex items-center gap-4 mb-6">
-          <span className="text-2xl font-bold text-primary">${product.price}</span>
+          <span className="text-2xl font-bold text-green-600">₹ {product.price}</span>
           <span className="badge badge-outline">{product.countInStock} in stock</span>
         </div>
         <button

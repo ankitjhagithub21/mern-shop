@@ -89,7 +89,7 @@ const CartPage = () => {
                     />
                     <span>{item.product.name}</span>
                   </td>
-                  <td>${item.price}</td>
+                  <td>₹ {item.price}</td>
                   <td>
                     <div className="flex items-center gap-2">
                       <button
@@ -118,7 +118,7 @@ const CartPage = () => {
                       </button>
                     </div>
                   </td>
-                  <td>${item.price * item.quantity}</td>
+                  <td className="text-green-600">₹ {item.price * item.quantity}</td>
                   <td>
                     <button
                       className="btn btn-xs btn-error"
@@ -133,7 +133,7 @@ const CartPage = () => {
           </table>
           <div className="flex justify-end mt-6">
             <div className="text-xl font-bold">
-              Subtotal: <span className="text-primary">${subtotal}</span>
+              Subtotal: <span className="text-green-600">₹ {subtotal}</span>
             </div>
           </div>
           <div className="flex justify-end mt-4">
