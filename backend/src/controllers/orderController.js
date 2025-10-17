@@ -10,6 +10,7 @@ const createOrder = async (req, res) => {
     if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'No order items' });
     }
+    
     const order = new Order({
       user: req.user._id,
       orderItems,
@@ -18,7 +19,11 @@ const createOrder = async (req, res) => {
       itemsPrice,
       shippingPrice,
       totalPrice,
+      // COD orders should remain unpaid until delivery
+      isPaid: false,
+      isDelivered: false
     });
+    
     const createdOrder = await order.save();
     
     // Clear user's cart after successful order creation

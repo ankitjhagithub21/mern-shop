@@ -6,14 +6,14 @@ const OrderSuccess = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [orderUpdated, setOrderUpdated] = useState(false);
+  const [order, setOrder] = useState(null);
 
   const orderId = searchParams.get('orderId');
   const paymentIntentId = searchParams.get('payment_intent');
 
 
   useEffect(() => {
-    const updateOrderPaymentStatus = async () => {
+    const handleOrderSuccess = async () => {
       if (!orderId) {
         setError("Missing order information");
         setLoading(false);
@@ -21,34 +21,56 @@ const OrderSuccess = () => {
       }
 
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/orders/${orderId}/payment`,
+        // First, fetch the order to check payment method
+        const orderRes = await fetch(
+          `${import.meta.env.VITE_API_URL}/orders/${orderId}`,
           {
-            method: "PUT",
+            method: "GET",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: JSON.stringify({ 
-              paymentIntentId,
-              isPaid: true,
-              paidAt: new Date().toISOString()
-            }),
           }
         );
-
-        const data = await res.json();
-        if (res.ok) {
-          setOrderUpdated(true);
-        } else {
-          setError(data.message || "Failed to update order status");
+        
+        const orderData = await orderRes.json();
+        if (!orderRes.ok) {
+          setError("Failed to fetch order details");
+          setLoading(false);
+          return;
         }
+
+        setOrder(orderData);
+
+        // Only update payment status if it's a card payment with payment intent
+        if (orderData.paymentMethod !== 'COD' && paymentIntentId) {
+          const res = await fetch(
+            `${import.meta.env.VITE_API_URL}/orders/${orderId}/payment`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ 
+                paymentIntentId,
+                isPaid: true,
+                paidAt: new Date().toISOString()
+              }),
+            }
+          );
+
+          if (!res.ok) {
+            const data = await res.json();
+            setError(data.message || "Failed to update payment status");
+          }
+        }
+        // For COD orders, no payment update needed
+        
       } catch (error) {
-        setError("Something went wrong updating order status");
+        setError("Something went wrong");
       } finally {
         setLoading(false);
       }
     };
 
-    updateOrderPaymentStatus();
+    handleOrderSuccess();
   }, [orderId, paymentIntentId]);
 
   if (loading) {
@@ -83,15 +105,21 @@ const OrderSuccess = () => {
         <div className="card-body">
           <div className="text-success text-6xl mb-4">✓</div>
           <h2 className="card-title text-success justify-center text-2xl">
-            Payment Successful!
+            {order?.paymentMethod === 'COD' ? 'Order Confirmed!' : 'Payment Successful!'}
           </h2>
           <p className="text-lg mb-4">
-            Your order has been placed and payment confirmed.
+            {order?.paymentMethod === 'COD' 
+              ? 'Your order has been placed successfully. Pay on delivery.'
+              : 'Your order has been placed and payment confirmed.'
+            }
           </p>
           {orderId && (
             <div className="bg-base-200 p-4 rounded-lg mb-4">
               <p className="text-sm text-gray-600">Order ID:</p>
               <p className="font-mono font-bold">{orderId}</p>
+              {order?.paymentMethod === 'COD' && (
+                <p className="text-sm text-orange-600 mt-2">Cash on Delivery</p>
+              )}
             </div>
           )}
           <div className="text-center mb-4">

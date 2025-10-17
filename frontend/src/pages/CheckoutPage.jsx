@@ -48,7 +48,14 @@ const CheckoutPage = () => {
       if (!res.ok) {
         setError(data.message || 'Order creation failed');
       } else {
-        navigate(`/order/${data._id}`);
+        // Redirect based on payment method
+        if (paymentMethod === 'COD') {
+          // For COD, redirect to order success page since no payment processing needed
+          navigate(`/order-success?orderId=${data._id}`);
+        } else {
+          // For card payments, redirect to order details where they can pay
+          navigate(`/order/${data._id}`);
+        }
       }
     } catch {
       setError('Something went wrong');
