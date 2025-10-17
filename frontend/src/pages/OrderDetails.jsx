@@ -34,6 +34,32 @@ const OrderDetails = () => {
     getOrderById(id);
   }, [id]);
 
+  const handlePayment = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/payments/create-payment-intent`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            orderId: order._id,
+            amount: order.totalPrice,
+          }),
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        // Redirect to Stripe payment page or handle payment flow
+        window.location.href = data.url;
+      } else {
+        setError(data.message || "Failed to create payment");
+      }
+    } catch (error) {
+      setError("Something went wrong with payment");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -180,6 +206,18 @@ const OrderDetails = () => {
                   <span className="text-green-600">₹{order.totalPrice}</span>
                 </div>
               </div>
+
+              {/* Payment Button */}
+              {order.paymentMethod.toLowerCase() !== 'cod' && !order.isPaid && (
+                <div className="mt-4">
+                  <button
+                    className="btn btn-primary w-full"
+                    onClick={handlePayment}
+                  >
+                    Pay Now with Stripe
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
