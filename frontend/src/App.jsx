@@ -18,6 +18,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
 import CheckoutPage from './pages/CheckoutPage'
+import OrderDetails from './pages/OrderDetails'
 
 function AdminRoute() {
   const { user, loading } = useAuth();
@@ -58,6 +59,10 @@ function App() {
     {
       path: "/product/:id",
       element: <UserLayout><ProductDetails/></UserLayout>
+    },
+    {
+      path: "/order/:id",
+      element: <UserLayout><OrderDetails/></UserLayout>
     },
     {
       path: "/login",
