@@ -1,20 +1,27 @@
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
+const Address = require('../models/Address');
 
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
 const createOrder = async (req, res) => {
   try {
-    const { orderItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, totalPrice } = req.body;
+    const { orderItems, shippingAddressId, paymentMethod, itemsPrice, shippingPrice, totalPrice } = req.body;
     if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'No order items' });
+    }
+
+    // Verify the shipping address belongs to the user
+    const shippingAddress = await Address.findById(shippingAddressId);
+    if (!shippingAddress || shippingAddress.user.toString() !== req.user._id.toString()) {
+      return res.status(400).json({ message: 'Invalid shipping address' });
     }
     
     const order = new Order({
       user: req.user._id,
       orderItems,
-      shippingAddress,
+      shippingAddress: shippingAddressId,
       paymentMethod,
       itemsPrice,
       shippingPrice,
@@ -43,7 +50,7 @@ const createOrder = async (req, res) => {
 // @access  Private
 const getMyOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id });
+    const orders = await Order.find({ user: req.user._id }).populate('shippingAddress');
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
@@ -55,7 +62,10 @@ const getMyOrders = async (req, res) => {
 // @access  Private
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate('user', 'name email').populate('orderItems.product');
+    const order = await Order.findById(req.params.id)
+      .populate('user', 'name email')
+      .populate('orderItems.product')
+      .populate('shippingAddress');
     if (order) {
       res.json(order);
     } else {

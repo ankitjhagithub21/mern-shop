@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes')
 const cartRoutes = require('./routes/cartRoutes')
 const paymentRoutes = require('./routes/paymentRoutes')
 const orderRoutes = require('./routes/orderRoutes')
+const addressRoutes = require('./routes/addressRoutes')
 const app = express()
 const port = process.env.PORT || 8000
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/payments', paymentRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/addresses', addressRoutes);
 
 
 app.listen(port, () => {
