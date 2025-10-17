@@ -19,6 +19,8 @@ import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
 import CheckoutPage from './pages/CheckoutPage'
 import OrderDetails from './pages/OrderDetails'
+import OrderSuccess from './pages/OrderSuccess'
+import OrderFailed from './pages/OrderFailed'
 
 function AdminRoute() {
   const { user, loading } = useAuth();
@@ -63,6 +65,14 @@ function App() {
     {
       path: "/order/:id",
       element: <UserLayout><OrderDetails/></UserLayout>
+    },
+     {
+      path: "/order-success",
+      element: <UserLayout><OrderSuccess/></UserLayout>
+    },
+     {
+      path: "/order-failed",
+      element: <UserLayout><OrderFailed/></UserLayout>
     },
     {
       path: "/login",

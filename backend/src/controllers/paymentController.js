@@ -1,4 +1,3 @@
-
 const Order = require("../models/Order");
 const Stripe = require("stripe");
 
@@ -41,8 +40,8 @@ const createPaymentIntent = async (req, res) => {
       payment_method_types: ['card'],
       line_items: line_items,
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/order-success`,
-      cancel_url: `${process.env.CLIENT_URL}/order-cancel`,
+      success_url: `${process.env.CLIENT_URL}/order-success?orderId=${orderId}`,
+      cancel_url: `${process.env.CLIENT_URL}/order-cancel?orderId=${orderId}`,
     });
 
     

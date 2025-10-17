@@ -5,6 +5,7 @@ const {
   getMyOrders,
   getOrderById,
   updateOrderStatus,
+  updateOrderPaymentStatus,
 } = require('../controllers/orderController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
@@ -27,5 +28,10 @@ router.get('/:id', protect, getOrderById);
 // @route   PUT /api/orders/:id/status
 // @access  Private/Admin
 router.put('/:id/status', protect, admin, updateOrderStatus);
+
+// @desc    Update order payment status
+// @route   PUT /api/orders/:id/payment
+// @access  Private
+router.put('/:id/payment', protect, updateOrderPaymentStatus);
 
 module.exports = router;

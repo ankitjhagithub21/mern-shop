@@ -78,9 +78,45 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+// @desc    Update order payment status
+// @route   PUT /api/orders/:id/payment
+// @access  Private
+const updateOrderPaymentStatus = async (req, res) => {
+  try {
+    const { paymentIntentId, isPaid, paidAt } = req.body;
+    
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Verify order belongs to user
+    if (order.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    // Update payment status
+    order.isPaid = isPaid;
+    order.paidAt = paidAt;
+    if (paymentIntentId) {
+      order.paymentResult = {
+        id: paymentIntentId,
+        status: 'completed',
+        update_time: new Date().toISOString(),
+      };
+    }
+
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   createOrder,
   getMyOrders,
   getOrderById,
   updateOrderStatus,
+  updateOrderPaymentStatus,
 };
