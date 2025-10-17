@@ -12,7 +12,8 @@ export const useCartStore = create((set, get) => ({
     )
   })),
   removeItem: (productId) => set(state => ({
-    cart: state.cart.filter(item => item.productId !== productId)
+    
+    cart: state.cart.filter(item => item.product._id !== productId)
   })),
   clearCart: () => set({ cart: [] }),
   fetchCart: async () => {

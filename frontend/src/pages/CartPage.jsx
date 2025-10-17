@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../store/useCartStore";
 
 const CartPage = () => {
-  const { cart, setCart } = useCartStore();
-  const [loading, setLoading] = useState(false); // loading can be managed globally if needed
+  const { cart, setCart, removeItem } = useCartStore();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleQuantityChange = async (productId, quantity) => {
     if (quantity < 1) return;
-   
+
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/cart/${productId}`,
@@ -26,12 +26,12 @@ const CartPage = () => {
     } catch {
       setError("Something went wrong");
     }
-    
   };
 
   const handleRemove = async (productId) => {
+    
     if (!window.confirm("Remove this item from cart?")) return;
-   
+
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/cart/${productId}`,
@@ -40,12 +40,12 @@ const CartPage = () => {
           credentials: "include",
         }
       );
-      const data = await res.json();
-      if (res.ok) setCart(data.products);
+      
+      if (res.ok) removeItem(productId);
+
     } catch {
       setError("Something went wrong");
     }
-   
   };
 
   const subtotal = cart?.reduce(
@@ -118,7 +118,9 @@ const CartPage = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="text-green-600">₹ {item.price * item.quantity}</td>
+                  <td className="text-green-600">
+                    ₹ {item.price * item.quantity}
+                  </td>
                   <td>
                     <button
                       className="btn btn-xs btn-error"
@@ -151,4 +153,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-         
