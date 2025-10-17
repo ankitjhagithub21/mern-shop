@@ -57,120 +57,240 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-base-100 rounded-lg shadow p-8 mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">Checkout</h2>
-      {/* Cart details */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-2">Your Cart</h3>
-        {cart.length === 0 ? (
-          <div className="text-gray-500">Your cart is empty.</div>
-        ) : (
-          <ul className="divide-y divide-base-200 mb-2">
-            {cart.map(item => (
-              <li key={item.product._id} className="flex items-center py-2 gap-3">
-                <img
-                  src={item.product.thumbnail}
-                  alt={item.product.name}
-                  className="w-10 h-10 object-cover rounded"
-                />
-                <span className="flex-1">{item.product.name}</span>
-                <span>x{item.quantity}</span>
-                <span className="font-bold text-green-600">₹{item.price * item.quantity}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div className="flex justify-end font-bold">
-          Subtotal: <span className="text-green-600 ml-2">₹{subtotal}</span>
+    <div className="min-h-screen bg-base-200 py-8">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-semibold mb-2">Checkout</h1>
+          <p className="text-gray-300">Complete your order</p>
         </div>
-        <div className="flex justify-end font-bold mt-2">
-          Shipping: <span className="ml-2">₹{shippingPrice}</span>
-        </div>
-        <div className="flex justify-end font-bold mt-2">
-          Total: <span className="text-green-600 ml-2">₹{totalPrice}</span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Order Summary */}
+          <div className="order-2 lg:order-1">
+            <div className="card bg-base-100 shadow-lg">
+              <div className="card-body">
+                <h2 className="card-title text-2xl mb-4">
+                  <span className="text-primary">📋</span> Order Summary
+                </h2>
+                
+                {cart.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <div className="text-6xl mb-4">🛒</div>
+                    <p>Your cart is empty</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-4 mb-6">
+                      {cart.map(item => (
+                        <div key={item.product._id} className="flex items-center gap-4 p-3 bg-base-200 rounded-lg">
+                          <img
+                            src={item.product.thumbnail}
+                            alt={item.product.name}
+                            className="w-16 h-16 object-cover rounded-lg"
+                          />
+                          <div className="flex-1">
+                            <h3 className="font-semibold">{item.product.name}</h3>
+                            <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-green-600">₹{item.price * item.quantity}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="divider"></div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span>Subtotal:</span>
+                        <span className="font-semibold">₹{subtotal}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Shipping:</span>
+                        <span className="font-semibold">
+                          {shippingPrice === 0 ? (
+                            <span className="text-green-600">Free</span>
+                          ) : (
+                            `₹${shippingPrice}`
+                          )}
+                        </span>
+                      </div>
+                      <div className="divider my-2"></div>
+                      <div className="flex justify-between text-xl font-bold">
+                        <span>Total:</span>
+                        <span className="text-green-600">₹{totalPrice}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Checkout Form */}
+          <div className="order-1 lg:order-2">
+            <div className="card bg-base-100 shadow-lg">
+              <div className="card-body">
+                <h2 className="card-title text-2xl mb-6">
+                  <span className="text-primary">📝</span> Shipping & Payment
+                </h2>
+
+                {error && (
+                  <div className="alert alert-error mb-6">
+                    <span>⚠️ {error}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleOrder} className="space-y-4">
+                  {/* Shipping Address Section */}
+                  <div className="bg-base-200 p-4 rounded-lg">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2">
+                      <span>🏠</span> Shipping Address
+                    </h3>
+                    
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="form-control flex flex-col gap-2">
+                        <label className="label">
+                          <span className="label-text font-medium">Street Address</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Enter your full address"
+                          className="input input-bordered w-full focus:input-primary"
+                          value={address}
+                          onChange={e => setAddress(e.target.value)}
+                          required
+                          disabled={loading}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="form-control">
+                          <label className="label mb-2">
+                            <span className="label-text font-medium">City</span>
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="City"
+                            className="input input-bordered focus:input-primary"
+                            value={city}
+                            onChange={e => setCity(e.target.value)}
+                            required
+                            disabled={loading}
+                          />
+                        </div>
+                        
+                        <div className="form-control">
+                          <label className="label mb-2">
+                            <span className="label-text font-medium">Postal Code</span>
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="PIN Code"
+                            className="input input-bordered focus:input-primary"
+                            value={postalCode}
+                            onChange={e => setPostalCode(e.target.value)}
+                            required
+                            disabled={loading}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-control flex flex-col gap-2">
+                        <label className="label">
+                          <span className="label-text font-medium">Country</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Country"
+                          className="input w-full input-bordered focus:input-primary"
+                          value={country}
+                          onChange={e => setCountry(e.target.value)}
+                          required
+                          disabled={loading}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Payment Method Section */}
+                  <div className="bg-base-200 p-4 rounded-lg">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2">
+                      <span>💳</span> Payment Method
+                    </h3>
+                    
+                    <div className="form-control">
+                      <div className="grid grid-cols-1 gap-3">
+                        <label className="label cursor-pointer justify-start gap-4 p-3 border rounded-lg hover:bg-base-300">
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="COD"
+                            checked={paymentMethod === 'COD'}
+                            onChange={e => setPaymentMethod(e.target.value)}
+                            className="radio radio-primary"
+                            disabled={loading}
+                          />
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">💵</span>
+                            <div>
+                              <span className="label-text font-medium">Cash on Delivery</span>
+                              <p className="text-sm text-gray-600">Pay when you receive your order</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label className="label cursor-pointer justify-start gap-4 p-3 border rounded-lg hover:bg-base-300">
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="Card"
+                            checked={paymentMethod === 'Card'}
+                            onChange={e => setPaymentMethod(e.target.value)}
+                            className="radio radio-primary"
+                            disabled={loading}
+                          />
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">💳</span>
+                            <div>
+                              <span className="label-text font-medium">Credit/Debit Card</span>
+                              <p className="text-sm text-gray-600">Secure payment via Stripe</p>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={`btn btn-primary btn-lg w-full text-lg ${loading ? 'btn-disabled' : ''}`}
+                    disabled={loading || cart.length === 0}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="loading loading-spinner loading-sm"></span>
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        🛒 Place Order - ₹{totalPrice}
+                      </>
+                    )}
+                  </button>
+
+                  {subtotal < 500 && (
+                    <div className="alert alert-info">
+                      <span>💡 Add ₹{500 - subtotal} more for free shipping!</span>
+                    </div>
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {error && <div className="alert alert-error mb-4 py-2">{error}</div>}
-      <form onSubmit={handleOrder}>
-        <div className="form-control mb-4">
-          <label className="label">
-            <span className="label-text">Address</span>
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={address}
-            onChange={e => setAddress(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div className="form-control mb-4">
-          <label className="label">
-            <span className="label-text">City</span>
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={city}
-            onChange={e => setCity(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div className="form-control mb-4">
-          <label className="label">
-            <span className="label-text">Postal Code</span>
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={postalCode}
-            onChange={e => setPostalCode(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div className="form-control mb-4">
-          <label className="label">
-            <span className="label-text">Country</span>
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={country}
-            onChange={e => setCountry(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div className="form-control mb-6">
-          <label className="label">
-            <span className="label-text">Payment Method</span>
-          </label>
-          <select
-            className="select select-bordered"
-            value={paymentMethod}
-            onChange={e => setPaymentMethod(e.target.value)}
-            disabled={loading}
-          >
-            <option value="COD">Cash on Delivery</option>
-            <option value="Card">Card</option>
-            {/* Add more payment methods if needed */}
-          </select>
-        </div>
-        <button
-          type="submit"
-          className={`btn btn-primary w-full₹{loading ? ' btn-disabled' : ''}`}
-          disabled={loading}
-        >
-          {loading ? (
-            <span className="loading loading-spinner loading-sm"></span>
-          ) : (
-            'Place Order'
-          )}
-        </button>
-      </form>
     </div>
   );
 };

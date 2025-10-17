@@ -50,7 +50,7 @@ const getMyOrders = async (req, res) => {
 // @access  Private
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate('user', 'name email');
+    const order = await Order.findById(req.params.id).populate('user', 'name email').populate('orderItems.product');
     if (order) {
       res.json(order);
     } else {

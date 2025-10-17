@@ -79,7 +79,7 @@ const OrderDetails = () => {
   if (!order) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="text-center text-gray-500">Order not found</div>
+        <div className="text-center text-gray-300">Order not found</div>
       </div>
     );
   }
@@ -99,7 +99,7 @@ const OrderDetails = () => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Order Details</h1>
-        <p className="text-gray-600">Order ID: {order._id}</p>
+        <p className="text-gray-300">Order ID: {order._id}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -120,7 +120,7 @@ const OrderDetails = () => {
                   {order.isDelivered ? "Delivered" : "Not Delivered"}
                 </span>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-300">
                 Ordered on: {new Date(order.createdAt).toLocaleDateString("en-IN", {
                   year: "numeric",
                   month: "long",
@@ -138,15 +138,26 @@ const OrderDetails = () => {
               <h2 className="card-title">Order Items</h2>
               <div className="space-y-4">
                 {order.orderItems.map((item, index) => (
-                  <div key={index} className="flex justify-between items-center p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">Product ID: {item.product}</p>
-                      <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                  <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
+                    <img
+                      src={item.product.thumbnail}
+                      alt={item.product.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-medium text-lg">{item.product.name}</h3>
+                      <p className="text-sm text-gray-300 line-clamp-2">
+                        {item.product.description}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Category: {item.product.category}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold">₹{item.price}</p>
-                      <p className="text-sm text-gray-600">
-                        Total: ₹{item.price * item.quantity}
+                      <p className="font-bold">₹{item.price} each</p>
+                      <p className="text-sm text-gray-300">Qty: {item.quantity}</p>
+                      <p className="text-lg font-bold text-green-600">
+                        ₹{item.price * item.quantity}
                       </p>
                     </div>
                   </div>
@@ -159,11 +170,11 @@ const OrderDetails = () => {
           <div className="card bg-base-100 shadow">
             <div className="card-body">
               <h2 className="card-title">Shipping Address</h2>
-              <div className="text-gray-700">
-                <p>{order.shippingAddress.address}</p>
-                <p>{order.shippingAddress.city}</p>
-                <p>{order.shippingAddress.postalCode}</p>
-                <p>{order.shippingAddress.country}</p>
+              <div className="text-gray-300">
+                <p>Area : {order.shippingAddress.address}</p>
+                <p>city : {order.shippingAddress.city}</p>
+                <p>Pin code :{order.shippingAddress.postalCode}</p>
+                <p>Country :{order.shippingAddress.country}</p>
               </div>
             </div>
           </div>
@@ -177,7 +188,7 @@ const OrderDetails = () => {
               <h2 className="card-title">Customer Information</h2>
               <div>
                 <p className="font-medium">{order.user.name}</p>
-                <p className="text-gray-600">{order.user.email}</p>
+                <p className="text-gray-300">{order.user.email}</p>
               </div>
             </div>
           </div>
@@ -208,14 +219,20 @@ const OrderDetails = () => {
               </div>
 
               {/* Payment Button */}
-              {order.paymentMethod.toLowerCase() !== 'cod' && !order.isPaid && (
+              {order.paymentMethod.toLowerCase() !== 'cod' && (
                 <div className="mt-4">
-                  <button
-                    className="btn btn-primary w-full"
-                    onClick={handlePayment}
-                  >
-                    Pay Now with Stripe
-                  </button>
+                  {order.isPaid ? (
+                    <button className="btn btn-success w-full" disabled>
+                      Paid ✓
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary w-full"
+                      onClick={handlePayment}
+                    >
+                      Pay Now with Stripe
+                    </button>
+                  )}
                 </div>
               )}
             </div>
