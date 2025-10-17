@@ -45,6 +45,12 @@ const Sidebar = () => {
               Products
             </Link>
           </li>
+           <li>
+            <Link to="/admin/orders">
+              <Boxes className="w-5 h-5 mr-2" />
+               Orders
+            </Link>
+          </li>
           <li>
             <Link to="/admin/users">
               <User2 className="w-5 h-5 mr-2" />

@@ -76,6 +76,41 @@ const getOrderById = async (req, res) => {
   }
 };
 
+// @desc    Get all orders (Admin only)
+// @route   GET /api/orders
+// @access  Private/Admin
+const getAllOrders = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const orders = await Order.find({})
+      .populate('user', 'name email')
+      .populate('shippingAddress')
+      .populate('orderItems.product', 'name thumbnail')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalOrders = await Order.countDocuments({});
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    res.json({
+      orders,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalOrders,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 // @desc    Update order status (e.g., paid, delivered)
 // @route   PUT /api/orders/:id/status
 // @access  Private/Admin
@@ -132,6 +167,7 @@ module.exports = {
   createOrder,
   getMyOrders,
   getOrderById,
+  getAllOrders,
   updateOrderStatus,
   updateOrderPaymentStatus,
 };

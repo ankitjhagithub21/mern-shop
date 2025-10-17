@@ -21,6 +21,7 @@ import CheckoutPage from './pages/CheckoutPage'
 import OrderDetails from './pages/OrderDetails'
 import OrderSuccess from './pages/OrderSuccess'
 import OrderFailed from './pages/OrderFailed'
+import AdminOrders from './admin/AdminOrders'
 
 function AdminRoute() {
   const { user, loading } = useAuth();
@@ -101,6 +102,10 @@ function App() {
         {
           path: "products",
           element: <AdminLayout><AdminProducts/></AdminLayout>
+        },
+         {
+          path: "orders",
+          element: <AdminLayout><AdminOrders/></AdminLayout>
         }
       ]
     },

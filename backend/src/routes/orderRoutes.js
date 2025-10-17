@@ -4,6 +4,7 @@ const {
   createOrder,
   getMyOrders,
   getOrderById,
+  getAllOrders,
   updateOrderStatus,
   updateOrderPaymentStatus,
 } = require('../controllers/orderController');
@@ -33,5 +34,10 @@ router.put('/:id/status', protect, admin, updateOrderStatus);
 // @route   PUT /api/orders/:id/payment
 // @access  Private
 router.put('/:id/payment', protect, updateOrderPaymentStatus);
+
+// @desc    Get all orders (Admin only)
+// @route   GET /api/orders
+// @access  Private/Admin
+router.get('/', protect, admin, getAllOrders);
 
 module.exports = router;
