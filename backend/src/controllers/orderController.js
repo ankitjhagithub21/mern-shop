@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const Cart = require('../models/Cart');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -19,6 +20,13 @@ const createOrder = async (req, res) => {
       totalPrice,
     });
     const createdOrder = await order.save();
+    
+    // Clear user's cart after successful order creation
+    await Cart.findOneAndUpdate(
+      { user: req.user._id },
+      { $set: { products: [] } }
+    );
+    
     res.status(201).json(createdOrder);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });

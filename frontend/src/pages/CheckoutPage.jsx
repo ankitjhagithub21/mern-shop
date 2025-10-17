@@ -25,7 +25,7 @@ const CheckoutPage = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`₹{import.meta.env.VITE_API_URL}/orders`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -48,7 +48,7 @@ const CheckoutPage = () => {
       if (!res.ok) {
         setError(data.message || 'Order creation failed');
       } else {
-        navigate(`/order/₹{data._id}`);
+        navigate(`/order/${data._id}`);
       }
     } catch {
       setError('Something went wrong');
