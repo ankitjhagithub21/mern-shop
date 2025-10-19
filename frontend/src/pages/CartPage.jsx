@@ -55,6 +55,10 @@ const CartPage = () => {
     0
   );
 
+  if(cart.length === 0){
+    return <EmptyCart />;
+  }
+
   return (
     <div className="max-w-6xl mx-auto min-h-screen px-4 py-8">
       <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
@@ -64,8 +68,6 @@ const CartPage = () => {
         </div>
       ) : error ? (
         <div className="alert alert-error">{error}</div>
-      ) : cart.length === 0 ? (
-        <EmptyCart />
       ) : (
         <div className="space-y-4">
           {/* Desktop Table View - Hidden on mobile */}

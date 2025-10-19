@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 const EmptyCart = () => {
   const navigate = useNavigate();
   return (
-    <div className="card">
+    <section className="min-h-[90vh] flex items-center justify-center">
+      <div className="card">
       <div className="card-body items-center text-center py-16">
         {/* Empty Cart Illustration */}
         <div className="mb-8">
@@ -32,7 +33,7 @@ const EmptyCart = () => {
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <button
               className="btn btn-primary btn-wide"
               onClick={() => navigate("/")}
@@ -49,6 +50,7 @@ const EmptyCart = () => {
         </div>
       </div>
     </div>
+    </section>
   );
 };
 
