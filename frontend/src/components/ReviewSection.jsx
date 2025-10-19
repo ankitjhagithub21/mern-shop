@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 const ReviewSection = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const [showForm, setShowForm] = useState(false);
   const [reviewForm, setReviewForm] = useState({
     rating: 5,
@@ -19,7 +20,7 @@ const ReviewSection = ({ productId }) => {
 
   const fetchReviews = async () => {
     try {
-      setLoading(true);
+     
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/reviews/product/${productId}`
       );
@@ -27,9 +28,7 @@ const ReviewSection = ({ productId }) => {
       setReviews(data);
     } catch (error) {
       toast.error("Failed to fetch reviews");
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   const submitReview = async (e) => {

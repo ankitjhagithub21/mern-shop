@@ -1,53 +1,66 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import {Toaster} from "react-hot-toast"
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-
-import { AuthProvider, useAuth } from './context/AuthContext' // add this import
-import NotFoundPage from './pages/NotFoundPage'
-
-
-import AddProduct from './admin/AddProduct'
-import AdminProducts from './admin/AdminProducts'
-import AdminDashboard from './admin/AdminDashboard'
-import ProductDetails from './pages/ProductDetails'
-import CartPage from './pages/CartPage'
+import { Toaster } from "react-hot-toast"
+import { lazy, Suspense } from 'react'
+import { AuthProvider, useAuth } from './context/AuthContext'
 import { Navigate, Outlet } from 'react-router-dom'
-import UserLayout from './layouts/UserLayout';
-import AdminLayout from './layouts/AdminLayout';
-import CheckoutPage from './pages/CheckoutPage'
-import OrderDetails from './pages/OrderDetails'
-import OrderSuccess from './pages/OrderSuccess'
-import OrderFailed from './pages/OrderFailed'
-import AdminOrders from './admin/AdminOrders'
+import LoadingSpinner from './components/loading/LoadingSpinner'
+
+// Lazy load components
+const HomePage = lazy(() => import('./pages/HomePage'))
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const RegisterPage = lazy(() => import('./pages/RegisterPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+const ProductDetails = lazy(() => import('./pages/ProductDetails'))
+const CartPage = lazy(() => import('./pages/CartPage'))
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
+const OrderDetails = lazy(() => import('./pages/OrderDetails'))
+const OrderSuccess = lazy(() => import('./pages/OrderSuccess'))
+const OrderFailed = lazy(() => import('./pages/OrderFailed'))
+
+// Admin components
+const AddProduct = lazy(() => import('./admin/AddProduct'))
+const AdminProducts = lazy(() => import('./admin/AdminProducts'))
+const AdminDashboard = lazy(() => import('./admin/AdminDashboard'))
+const AdminOrders = lazy(() => import('./admin/AdminOrders'))
+
+// Layouts
+const UserLayout = lazy(() => import('./layouts/UserLayout'))
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'))
+
+
 
 function AdminRoute() {
   const { user, loading } = useAuth();
-  if (loading) return <HomePage />;
+  if (loading) return <LoadingSpinner />;
   if (!user || !user.isAdmin) return <Navigate to="/" replace />;
   return <Outlet />;
 }
 
 function PrivateRoute() {
   const { user, loading } = useAuth();
-  if (loading) return <HomePage />;
+  if (loading) return <LoadingSpinner />;
   if (!user) return <Navigate to="/" replace />;
   return <Outlet />;
 }
 
 function App() {
-  
-
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <UserLayout><HomePage/></UserLayout>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><HomePage/></UserLayout>
+        </Suspense>
+      )
     },
-      {
+    {
       path: "/checkout",
-      element: <UserLayout><CheckoutPage/></UserLayout>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><CheckoutPage/></UserLayout>
+        </Suspense>
+      )
     },
     {
       path: "/cart",
@@ -55,33 +68,61 @@ function App() {
       children: [
         {
           path: "",
-          element: <UserLayout><CartPage/></UserLayout>
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <UserLayout><CartPage/></UserLayout>
+            </Suspense>
+          )
         }
       ]
     },
     {
       path: "/product/:id",
-      element: <UserLayout><ProductDetails/></UserLayout>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><ProductDetails/></UserLayout>
+        </Suspense>
+      )
     },
     {
       path: "/order/:id",
-      element: <UserLayout><OrderDetails/></UserLayout>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><OrderDetails/></UserLayout>
+        </Suspense>
+      )
     },
-     {
+    {
       path: "/order-success",
-      element: <UserLayout><OrderSuccess/></UserLayout>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><OrderSuccess/></UserLayout>
+        </Suspense>
+      )
     },
-     {
+    {
       path: "/order-cacel",
-      element: <UserLayout><OrderFailed/></UserLayout>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><OrderFailed/></UserLayout>
+        </Suspense>
+      )
     },
     {
       path: "/login",
-      element: <LoginPage/>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <LoginPage/>
+        </Suspense>
+      )
     },
     {
       path: "/register",
-      element: <RegisterPage/>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <RegisterPage/>
+        </Suspense>
+      )
     },
     {
       path: "/admin",
@@ -89,29 +130,53 @@ function App() {
       children: [
         {
           path: "",
-          element: <AdminLayout><AdminDashboard/></AdminLayout>
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <AdminLayout><AdminDashboard/></AdminLayout>
+            </Suspense>
+          )
         },
         {
           path: "dashboard",
-          element: <AdminLayout><AdminDashboard/></AdminLayout>
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <AdminLayout><AdminDashboard/></AdminLayout>
+            </Suspense>
+          )
         },
         {
           path: "add-product",
-          element: <AdminLayout><AddProduct/></AdminLayout>
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <AdminLayout><AddProduct/></AdminLayout>
+            </Suspense>
+          )
         },
         {
           path: "products",
-          element: <AdminLayout><AdminProducts/></AdminLayout>
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <AdminLayout><AdminProducts/></AdminLayout>
+            </Suspense>
+          )
         },
-         {
+        {
           path: "orders",
-          element: <AdminLayout><AdminOrders/></AdminLayout>
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <AdminLayout><AdminOrders/></AdminLayout>
+            </Suspense>
+          )
         }
       ]
     },
     {
       path: "*",
-      element: <NotFoundPage/>
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <NotFoundPage/>
+        </Suspense>
+      )
     }
   ])
 
