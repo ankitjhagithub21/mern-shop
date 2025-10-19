@@ -3,6 +3,7 @@ import { useParams,useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import ProductPageSkelton from '../components/loading/ProductPageSkelton';
+import ReviewSection from '../components/ReviewSection';
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -99,6 +100,7 @@ const ProductDetails = () => {
         </button>
       </div>
       </section>
+      <ReviewSection productId={product._id} />
     </div>
   );
 };
