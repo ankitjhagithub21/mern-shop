@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-
+import ProductsSkelton from './loading/ProductsSkelton';
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -61,11 +61,7 @@ const Products = () => {
         </select>
       </div>
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {[...Array(8)].map((_, idx) => (
-            <div key={idx} className="skeleton h-64 w-full rounded-lg"></div>
-          ))}
-        </div>
+        <ProductsSkelton />
       ) : filtered.length === 0 ? (
         <div className="text-center text-gray-500 py-12">No products found.</div>
       ) : (

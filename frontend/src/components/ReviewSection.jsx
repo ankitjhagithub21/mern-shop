@@ -119,20 +119,10 @@ const ReviewSection = ({ productId }) => {
 
   return (
     <div className="mt-8">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl font-bold">Reviews ({reviews.length})</h3>
-        {canUserReview() && (
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="btn btn-primary"
-          >
-            Write a Review
-          </button>
-        )}
-      </div>
+    
 
       {/* Review Form */}
-      {showForm && (
+      {canUserReview() && (
         <div className="card mb-6">
           <div className="card-body">
             <h4 className="card-title">Write Your Review</h4>
@@ -187,7 +177,7 @@ const ReviewSection = ({ productId }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn btn-success"
+                  className="btn btn-primary"
                 >
                   {loading && <span className="loading loading-spinner"></span>}
                   {loading ? "Submitting..." : "Submit Review"}
