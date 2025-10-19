@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams,useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
+import ProductPageSkelton from '../components/loading/ProductPageSkelton';
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -55,11 +56,7 @@ const ProductDetails = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <ProductPageSkelton />;
   }
 
   if (error || !product) {
@@ -71,8 +68,9 @@ const ProductDetails = () => {
 }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-8 bg-base-100 rounded-lg shadow">
-      <div className="flex items-center justify-center">
+    <div className="max-w-5xl min-h-screen mx-auto px-4 py-10 ">
+      <section className='grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 bg-base-100 rounded-lg'>
+        <div className="flex items-center justify-center">
         <img
           src={product.thumbnail}
           alt={product.name}
@@ -100,6 +98,7 @@ const ProductDetails = () => {
           {product.countInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
         </button>
       </div>
+      </section>
     </div>
   );
 };
