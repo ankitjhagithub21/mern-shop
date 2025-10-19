@@ -79,7 +79,7 @@ const OrderDetails = () => {
   if (!order) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="text-center text-gray-300">Order not found</div>
+        <div className="text-center text-gray-600">Order not found</div>
       </div>
     );
   }
@@ -99,7 +99,7 @@ const OrderDetails = () => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Order Details</h1>
-        <p className="text-gray-300">Order ID: {order._id}</p>
+        <p className="text-gray-600">Order ID: {order._id}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -120,7 +120,7 @@ const OrderDetails = () => {
                   {order.isDelivered ? "Delivered" : "Not Delivered"}
                 </span>
               </div>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-gray-600">
                 Ordered on: {new Date(order.createdAt).toLocaleDateString("en-IN", {
                   year: "numeric",
                   month: "long",
@@ -146,7 +146,7 @@ const OrderDetails = () => {
                     />
                     <div className="flex-1">
                       <h3 className="font-medium text-lg">{item.product.name}</h3>
-                      <p className="text-sm text-gray-300 line-clamp-2">
+                      <p className="text-sm text-gray-600 line-clamp-2">
                         {item.product.description}
                       </p>
                       <p className="text-sm text-gray-500">
@@ -155,7 +155,7 @@ const OrderDetails = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-bold">₹{item.price} each</p>
-                      <p className="text-sm text-gray-300">Qty: {item.quantity}</p>
+                      <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                       <p className="text-lg font-bold text-green-600">
                         ₹{item.price * item.quantity}
                       </p>
@@ -170,7 +170,7 @@ const OrderDetails = () => {
           <div className="card bg-base-100 shadow">
             <div className="card-body">
               <h2 className="card-title">Shipping Address</h2>
-              <div className="text-gray-300">
+              <div className="text-gray-600">
                 <p>Area : {order.shippingAddress.address}</p>
                 <p>city : {order.shippingAddress.city}</p>
                 <p>Pin code :{order.shippingAddress.postalCode}</p>
@@ -188,7 +188,7 @@ const OrderDetails = () => {
               <h2 className="card-title">Customer Information</h2>
               <div>
                 <p className="font-medium">{order.user.name}</p>
-                <p className="text-gray-300">{order.user.email}</p>
+                <p className="text-gray-600">{order.user.email}</p>
               </div>
             </div>
           </div>

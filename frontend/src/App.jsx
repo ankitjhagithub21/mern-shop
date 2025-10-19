@@ -8,6 +8,7 @@ import LoadingSpinner from './components/loading/LoadingSpinner'
 
 // Lazy load components
 const HomePage = lazy(() => import('./pages/HomePage'))
+const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
@@ -51,6 +52,14 @@ function App() {
       element: (
         <Suspense fallback={<LoadingSpinner />}>
           <UserLayout><HomePage/></UserLayout>
+        </Suspense>
+      )
+    },
+    {
+      path: "/profile",
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <UserLayout><ProfilePage/></UserLayout>
         </Suspense>
       )
     },
