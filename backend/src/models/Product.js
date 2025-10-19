@@ -33,24 +33,15 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+      min: 0,
+      max: 5,
     },
     numReviews: {
       type: Number,
       required: true,
       default: 0,
+      min: 0,
     },
-    reviews: [
-      {
-        name: { type: String, required: true },
-        rating: { type: Number, required: true },
-        comment: { type: String, required: true },
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-          required: true,
-        },
-      },
-    ],
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -62,6 +53,19 @@ const productSchema = new mongoose.Schema(
     versionKey: false,
   }
 );
+
+// Add indexes for better query performance
+productSchema.index({ category: 1 });
+productSchema.index({ rating: -1 });
+productSchema.index({ price: 1 });
+productSchema.index({ name: 'text', description: 'text' });
+
+// Virtual to populate reviews from Review model
+productSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'product',
+});
 
 const Product = mongoose.model('Product', productSchema);
 

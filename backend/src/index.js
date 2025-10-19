@@ -2,6 +2,10 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+
+const app = express()
+const port = process.env.PORT || 8000
+
 const connectDB = require('./config/db')
 const productRoutes = require('./routes/productRoutes')
 const authRoutes = require('./routes/authRoutes')
@@ -9,8 +13,8 @@ const cartRoutes = require('./routes/cartRoutes')
 const paymentRoutes = require('./routes/paymentRoutes')
 const orderRoutes = require('./routes/orderRoutes')
 const addressRoutes = require('./routes/addressRoutes')
-const app = express()
-const port = process.env.PORT || 8000
+const reviewRoutes = require('./routes/reviewRoutes')
+
 
 connectDB()
 
@@ -31,6 +35,7 @@ app.use('/api/cart', cartRoutes)
 app.use('/api/payments', paymentRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/addresses', addressRoutes);
+app.use('/api/reviews', reviewRoutes)
 
 
 app.listen(port, () => {
