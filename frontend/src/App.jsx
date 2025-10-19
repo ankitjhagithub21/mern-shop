@@ -72,7 +72,7 @@ function App() {
       element: <UserLayout><OrderSuccess/></UserLayout>
     },
      {
-      path: "/order-failed",
+      path: "/order-cacel",
       element: <UserLayout><OrderFailed/></UserLayout>
     },
     {
