@@ -6,17 +6,26 @@ import { useAuth } from '../context/AuthContext';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate()
-
   const {setUser} = useAuth()
+
+  // Helper function to get error message for a specific field
+  const getFieldError = (fieldName) => {
+    const fieldError = errors.find(error => error.path === fieldName);
+    return fieldError ? fieldError.msg : '';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    setErrors([]);
     setError('');
     setLoading(true);
+   
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: 'POST',
@@ -26,13 +35,15 @@ const LoginPage = () => {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || 'Login failed');
+        if (data.errors) {
+          setErrors(data.errors);
+        } else {
+          setError(data.message || 'Login failed');
+        }
       } else {
-        // handle login success (e.g., save token, redirect)
         setUser(data)
-        toast.success(`Welcome back ${data.name}`)
-        navigate("/")
-
+         toast.success("Logged in successfully.")
+         navigate("/")
       }
     } catch (err) {
       setError('Something went wrong');
@@ -41,7 +52,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-5 overflow-y-scroll bg-base-200">
+    <div className="flex items-center justify-center min-h-screen bg-base-200 p-5">
       <div className="w-full max-w-md p-8 shadow-lg rounded-lg bg-base-100">
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
@@ -60,12 +71,15 @@ const LoginPage = () => {
             </label>
             <input
               type="email"
-              className="input w-full input-bordered"
+              className={`input w-full input-bordered ${getFieldError('email') ? 'input-error' : ''}`}
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
               disabled={loading}
             />
+            {getFieldError('email') && (
+              <span className="text-error text-sm mt-1">{getFieldError('email')}</span>
+            )}
           </div>
           <div className="form-control mb-6">
             <label className="label">
@@ -73,12 +87,15 @@ const LoginPage = () => {
             </label>
             <input
               type="password"
-              className="input w-full input-bordered"
+              className={`input w-full input-bordered ${getFieldError('password') ? 'input-error' : ''}`}
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
               disabled={loading}
             />
+            {getFieldError('password') && (
+              <span className="text-error text-sm mt-1">{getFieldError('password')}</span>
+            )}
           </div>
           <button
             type="submit"

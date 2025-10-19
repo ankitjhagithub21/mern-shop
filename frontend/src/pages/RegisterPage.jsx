@@ -8,6 +8,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,26 +16,34 @@ const RegisterPage = () => {
   const navigate = useNavigate()
   const {setUser} = useAuth()
 
+  // Helper function to get error message for a specific field
+  const getFieldError = (fieldName) => {
+    const fieldError = errors.find(error => error.path === fieldName);
+    return fieldError ? fieldError.msg : '';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    setErrors([]);
     setError('');
     setSuccess('');
     setLoading(true);
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      setLoading(false);
-      return;
-    }
+   
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials:'include',
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, confirmPassword }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || 'Registration failed');
+        if (data.errors) {
+          setErrors(data.errors);
+        } else {
+          setError(data.message || 'Registration failed');
+        }
       } else {
         setUser(data)
          toast.success("Account created successfully.")
@@ -67,12 +76,15 @@ const RegisterPage = () => {
             </label>
             <input
               type="text"
-              className="input w-full input-bordered"
+              className={`input w-full input-bordered ${getFieldError('name') ? 'input-error' : ''}`}
               value={name}
               onChange={e => setName(e.target.value)}
               required
               disabled={loading}
             />
+            {getFieldError('name') && (
+              <span className="text-error text-sm mt-1">{getFieldError('name')}</span>
+            )}
           </div>
           <div className="form-control flex flex-col mb-4">
             <label className="label">
@@ -80,12 +92,15 @@ const RegisterPage = () => {
             </label>
             <input
               type="email"
-              className="input w-full input-bordered"
+              className={`input w-full input-bordered ${getFieldError('email') ? 'input-error' : ''}`}
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
               disabled={loading}
             />
+            {getFieldError('email') && (
+              <span className="text-error text-sm mt-1">{getFieldError('email')}</span>
+            )}
           </div>
           <div className="form-control mb-4">
             <label className="label">
@@ -93,12 +108,15 @@ const RegisterPage = () => {
             </label>
             <input
               type="password"
-              className="input w-full input-bordered"
+              className={`input w-full input-bordered ${getFieldError('password') ? 'input-error' : ''}`}
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
               disabled={loading}
             />
+            {getFieldError('password') && (
+              <span className="text-error text-sm mt-1">{getFieldError('password')}</span>
+            )}
           </div>
           <div className="form-control mb-6">
             <label className="label">
@@ -106,12 +124,15 @@ const RegisterPage = () => {
             </label>
             <input
               type="password"
-              className="input w-full input-bordered"
+              className={`input w-full input-bordered ${getFieldError('confirmPassword') ? 'input-error' : ''}`}
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
               required
               disabled={loading}
             />
+            {getFieldError('confirmPassword') && (
+              <span className="text-error text-sm mt-1">{getFieldError('confirmPassword')}</span>
+            )}
           </div>
           <button
             type="submit"
