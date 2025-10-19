@@ -2,10 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-
-const app = express()
-const port = process.env.PORT || 8000
-
 const connectDB = require('./config/db')
 const productRoutes = require('./routes/productRoutes')
 const authRoutes = require('./routes/authRoutes')
@@ -15,12 +11,19 @@ const orderRoutes = require('./routes/orderRoutes')
 const addressRoutes = require('./routes/addressRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 
+const app = express()
+const port = process.env.PORT || 8000
+
+
+
 
 connectDB()
 
 app.use(express.json())
+ app.use(express.urlencoded({ extended: true })); 
 app.use(cors({
   origin: process.env.CLIENT_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials:true
 }))
 app.use(cookieParser())
