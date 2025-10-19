@@ -55,4 +55,68 @@ const createPaymentIntent = async (req, res) => {
   }
 };
 
-module.exports = { createPaymentIntent };
+// @desc    Handle Stripe webhook
+// @route   POST /api/payments/webhook
+// @access  Public
+const handleStripeWebhook = async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.log(`Webhook signature verification failed.`, err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  switch (event.type) {
+    case 'checkout.session.completed':
+      const session = event.data.object;
+      await updateOrderPaymentStatus(session);
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  res.json({ received: true });
+};
+
+// Helper function to update order payment status
+const updateOrderPaymentStatus = async (session) => {
+  try {
+    // Extract orderId from success_url
+    const successUrl = session.success_url;
+    const orderId = new URL(successUrl).searchParams.get('orderId');
+
+    if (!orderId) {
+      console.log('No orderId found in session');
+      return;
+    }
+
+    // Update order payment status
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      {
+        isPaid: true,
+        paidAt: new Date(),
+        paymentResult: {
+          id: session.payment_intent,
+          status: session.payment_status,
+          email_address: session.customer_details?.email
+        }
+      },
+      { new: true }
+    );
+
+    if (order) {
+      console.log(`Order ${orderId} payment status updated successfully`);
+    } else {
+      console.log(`Order ${orderId} not found`);
+    }
+  } catch (error) {
+    console.error('Error updating order payment status:', error);
+  }
+};
+
+module.exports = { createPaymentIntent, handleStripeWebhook };

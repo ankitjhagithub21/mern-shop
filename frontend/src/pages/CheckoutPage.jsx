@@ -263,7 +263,7 @@ const CheckoutPage = () => {
                                     <span className="text-sm text-gray-600">{addr.phone}</span>
                                     {addr.isDefault && <span className="badge badge-primary badge-sm">Default</span>}
                                   </div>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm text-gray-600 text-wrap">
                                     {addr.address}, {addr.city}, {addr.state} - {addr.postalCode}
                                   </p>
                                 </div>
