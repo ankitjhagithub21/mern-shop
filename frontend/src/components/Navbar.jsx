@@ -12,9 +12,17 @@ const Navbar = () => {
   const cartSubtotal = cart?.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-base-100 shadow-sm lg:px-5 px-0">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">MERN Shop</Link>
+        <Link to="/" className='flex items-center gap-2'>
+        <img src="./logo.png" alt="MERN shop" className='w-12 h-12'/>
+        <p className='text-3xl'>
+          <span className="font-bold  text-green-800">M</span>  
+          <span className="font-bold  text-yellow-600">E</span>  
+          <span className="font-bold  text-blue-800">R</span>  
+          <span className="font-bold  text-pink-800">N</span>  
+        </p>
+        </Link>
       </div>
       <div className="flex gap-5 items-center">
         {user && (
