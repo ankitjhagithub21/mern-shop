@@ -57,16 +57,16 @@ const LoginPage = () => {
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
           <img src="./logo.png" alt="Shop Logo" className="w-16 h-16 mb-2" />
-          <h1 className="text-3xl font-bold text-primary mb-2">MERN Shop</h1>
+          <h1 className="text-3xl font-bold text-neutral mb-2">MERN Shop</h1>
           <p className="text-sm text-gray-500 text-center mb-2">
             Welcome back! Login to continue shopping.
           </p>
         </div>
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        {error && <div className="alert alert-error mb-4 py-2">{error}</div>}
+      
+        {error && <div className="alert alert-error  mb-4 py-2">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-control flex flex-col mb-4">
-            <label className="label">
+            <label className="label mb-1">
               <span className="label-text">Email</span>
             </label>
             <input
@@ -82,7 +82,7 @@ const LoginPage = () => {
             )}
           </div>
           <div className="form-control mb-6">
-            <label className="label">
+            <label className="label mb-1">
               <span className="label-text">Password</span>
             </label>
             <input
@@ -99,7 +99,7 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className={`btn btn-primary w-full${loading ? ' btn-disabled' : ''}`}
+            className={`btn btn-neutral w-full${loading ? ' btn-disabled' : ''}`}
             disabled={loading}
           >
             {loading ? (
@@ -111,7 +111,7 @@ const LoginPage = () => {
         </form>
         <div className="mt-6 text-center">
           <span className="text-sm text-gray-600">Don't have an account?</span>{' '}
-          <Link to="/register" className="link link-primary text-sm font-medium">
+          <Link to="/register" className="link link-neutral text-sm font-medium">
             Register here
           </Link>
         </div>

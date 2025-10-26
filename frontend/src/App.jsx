@@ -1,4 +1,4 @@
-import './App.css'
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from "react-hot-toast"
 import { lazy, Suspense } from 'react'

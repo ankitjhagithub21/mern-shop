@@ -1,15 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {useCartStore} from '../store/useCartStore';
+import toast from 'react-hot-toast';
 
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const cart = useCartStore(state => state.cart);
+  const navigate = useNavigate()
 
   const cartCount = cart?.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart?.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login")
+    toast.success("Logout successfull.")
+  };
 
   return (
     <div className="navbar bg-base-100 shadow-sm lg:px-5 px-2">
@@ -60,7 +68,7 @@ const Navbar = () => {
                 <span className="text-lg font-bold">{cartCount || 0} Items</span>
                 <span className="text-info">Subtotal: ₹ {cartSubtotal || 0}</span>
                 <div className="card-actions">
-                  <Link to="/cart" className="btn btn-primary btn-block">
+                  <Link to="/cart" className="btn btn-neutral btn-block">
                     View cart
                   </Link>
                 </div>
@@ -103,13 +111,7 @@ const Navbar = () => {
                 <Link to="/cart">Cart</Link>
               </li>
               <li>
-                <button
-                  onClick={async () => {
-                    await logout();
-                  }}
-                >
-                  Logout
-                </button>
+                <button className='btn btn-neutral' onClick={handleLogout}>Logout</button>
               </li>
             </ul>
           </div>

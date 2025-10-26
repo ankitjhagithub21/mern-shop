@@ -101,7 +101,7 @@ const ProductDetails = () => {
           </div>
           <p className="mb-6">{product.description}</p>
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-2xl font-bold text-green-600">
+            <span className="text-2xl font-bold">
               ₹ {product.price}
             </span>
             <span className="badge badge-outline">
@@ -110,7 +110,7 @@ const ProductDetails = () => {
           </div>
           <button
             onClick={handleAddToCart}
-            className="btn btn-primary btn-block"
+            className="btn btn-neutral btn-block"
             disabled={product.countInStock === 0}
           >
             {product.countInStock === 0 ? "Out of Stock" : "Add to Cart"}

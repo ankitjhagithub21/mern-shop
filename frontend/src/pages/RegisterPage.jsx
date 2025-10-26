@@ -61,13 +61,13 @@ const RegisterPage = () => {
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
           <img src="./logo.png" alt="Shop Logo" className="w-16 h-16 mb-3" />
-          <h1 className="text-3xl font-bold text-primary mb-2">MERN Shop</h1>
+          <h1 className="text-3xl font-bold text-neutral mb-2">MERN Shop</h1>
           <p className="text-sm text-gray-500 text-center mb-2">
             Create your account to start shopping the best products!
           </p>
         </div>
-        <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
-        {error && <div className="alert alert-error mb-4 py-2">{error}</div>}
+       
+        {error && <div className="alert alert-error  mb-4 py-2">{error}</div>}
         {success && <div className="alert alert-success mb-4 py-2">{success}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-control flex flex-col mb-4">
@@ -136,7 +136,7 @@ const RegisterPage = () => {
           </div>
           <button
             type="submit"
-            className={`btn btn-primary w-full${loading ? ' btn-disabled' : ''}`}
+            className={`btn btn-neutral w-full${loading ? ' btn-disabled' : ''}`}
             disabled={loading}
           >
             {loading ? (
@@ -148,7 +148,7 @@ const RegisterPage = () => {
         </form>
         <div className="mt-6 text-center">
           <span className="text-sm text-gray-600">Already have an account?</span>{' '}
-          <Link to="/login" className="link link-primary text-sm font-medium">
+          <Link to="/login" className="link link-neutral text-sm font-medium">
             Login here
           </Link>
         </div>

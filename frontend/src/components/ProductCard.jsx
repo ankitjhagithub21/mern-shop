@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
             <span className="text-sm">{product.rating}</span>
           </div>
           <button
-            className="btn btn-primary btn-block mt-4"
+            className="btn btn-neutral btn-block mt-4"
             onClick={handleView}
             
           >

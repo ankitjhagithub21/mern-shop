@@ -176,7 +176,7 @@ const ReviewSection = ({ productId }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn btn-primary"
+                  className="btn btn-neutral"
                 >
                   {loading && <span className="loading loading-spinner"></span>}
                   {loading ? "Submitting..." : "Submit Review"}

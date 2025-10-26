@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
       credentials: 'include',
     });
     setUser(null);
+    
   };
 
   return (
