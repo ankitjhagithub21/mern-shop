@@ -23,7 +23,7 @@ const Navbar = () => {
     <div className="navbar bg-base-100 shadow-sm lg:px-5 px-2">
       <div className="flex-1">
         <Link to="/" className='flex items-center gap-2'>
-        <img src="./logo.png" alt="MERN shop" className='w-8 h-8'/>
+        <img src="/logo.png" alt="MERN shop" className='w-8 h-8'/>
         <p className='text-3xl'>
           <span className="font-bold  text-green-800">M</span>  
           <span className="font-bold  text-yellow-600">E</span>  
@@ -117,8 +117,8 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex gap-2">
-            <Link to="/login" className="btn btn-outline btn-primary btn-sm">Login</Link>
-            <Link to="/register" className="btn btn-primary btn-sm">Sign Up</Link>
+            <Link to="/login" className="btn btn-outline btn-neutral btn-sm">Login</Link>
+            <Link to="/register" className="btn btn-neutral btn-sm">Sign Up</Link>
           </div>
         )}
       </div>
