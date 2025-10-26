@@ -15,7 +15,7 @@ const Navbar = () => {
     <div className="navbar bg-base-100 shadow-sm lg:px-5 px-2">
       <div className="flex-1">
         <Link to="/" className='flex items-center gap-2'>
-        <img src="/logo.png" alt="MERN shop" className='w-8 h-8'/>
+        <img src="./logo.png" alt="MERN shop" className='w-8 h-8'/>
         <p className='text-3xl'>
           <span className="font-bold  text-green-800">M</span>  
           <span className="font-bold  text-yellow-600">E</span>  

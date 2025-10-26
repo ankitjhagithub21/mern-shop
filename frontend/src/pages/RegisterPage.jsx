@@ -60,7 +60,7 @@ const RegisterPage = () => {
       <div className="w-full max-w-md p-8 shadow-lg rounded-lg bg-base-100">
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
-          <img src="./vite.svg" alt="Shop Logo" className="w-16 h-16 mb-3" />
+          <img src="./logo.png" alt="Shop Logo" className="w-16 h-16 mb-3" />
           <h1 className="text-3xl font-bold text-primary mb-2">MERN Shop</h1>
           <p className="text-sm text-gray-500 text-center mb-2">
             Create your account to start shopping the best products!

@@ -8,9 +8,10 @@ import "swiper/css/autoplay";
 import "swiper/css/navigation";
 
 const images = [
-  "https://assets.tatacliq.com/medias/sys_master/images/67572967735326.jpg",
-  "https://assets.tatacliq.com/medias/sys_master/images/67572967669790.jpg",
-  "https://assets.tatacliq.com/medias/sys_master/images/67551227445278.jpg",
+ "./1.webp",
+  "./2.webp",
+  "./3.webp",
+  
 ];
 
 const Hero = () => {
