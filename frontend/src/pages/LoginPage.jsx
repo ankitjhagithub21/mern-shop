@@ -2,6 +2,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { MoveLeft } from 'lucide-react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -53,15 +54,15 @@ const LoginPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-base-200 p-5">
-      <div className="w-full max-w-md p-8 shadow-lg rounded-lg bg-base-100">
+      <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="flex flex-col items-center mb-6">
-          <img src="./logo.png" alt="Shop Logo" className="w-16 h-16 mb-2" />
-          <h1 className="text-3xl font-bold text-neutral mb-2">MERN Shop</h1>
-          <p className="text-sm text-gray-500 text-center mb-2">
+      
+          {/* <img src="./logo.png" alt="Shop Logo" className="w-16 h-16 mb-2" /> */}
+          {/* <h1 className="text-3xl font-bold text-neutral mb-2">MERN Shop</h1> */}
+          <p className=" mb-2 text-3xl mb-5">
             Welcome back! Login to continue shopping.
           </p>
-        </div>
+       
       
         {error && <div className="alert alert-error  mb-4 py-2">{error}</div>}
         <form onSubmit={handleSubmit}>
@@ -109,6 +110,12 @@ const LoginPage = () => {
             )}
           </button>
         </form>
+        <div className='my-2 flex items-center justify-between'>
+          <Link to="/" className="flex items-center gap-1 text-sm font-medium">
+          <MoveLeft/>
+          Back to Home</Link>
+          <Link to="/forgot-password" className="link link-neutral text-sm font-medium">Forgot Password?</Link>
+        </div>
         <div className="mt-6 text-center">
           <span className="text-sm text-gray-600">Don't have an account?</span>{' '}
           <Link to="/register" className="link link-neutral text-sm font-medium">

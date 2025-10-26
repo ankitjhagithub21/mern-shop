@@ -18,6 +18,8 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
 const OrderDetails = lazy(() => import('./pages/OrderDetails'))
 const OrderSuccess = lazy(() => import('./pages/OrderSuccess'))
 const OrderFailed = lazy(() => import('./pages/OrderFailed'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 
 // Admin components
 const AddProduct = lazy(() => import('./admin/AddProduct'))
@@ -28,6 +30,8 @@ const AdminOrders = lazy(() => import('./admin/AdminOrders'))
 // Layouts
 const UserLayout = lazy(() => import('./layouts/UserLayout'))
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'))
+
+
 
 
 
@@ -130,6 +134,22 @@ function App() {
       element: (
         <Suspense fallback={<LoadingSpinner />}>
           <RegisterPage/>
+        </Suspense>
+      )
+    },
+     {
+      path: "/forgot-password",
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <ForgotPassword/>
+        </Suspense>
+      )
+    },
+    {
+      path: "/reset-password",
+      element: (
+        <Suspense fallback={<LoadingSpinner />}>
+          <ResetPassword/>
         </Suspense>
       )
     },
