@@ -48,17 +48,17 @@ const Hero = () => {
       {/* Previous Button */}
       <button
         ref={prevRef}
-        className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
+        className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white lg:p-3 p-1 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
       >
-        <ArrowLeft size={20} />
+        <ArrowLeft />
       </button>
 
       {/* Next Button */}
       <button
         ref={nextRef}
-        className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
+        className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white lg:p-3 p-1 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
       >
-        <ArrowRight size={20} />
+        <ArrowRight/>
       </button>
     </section>
   );

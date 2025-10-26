@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
           <h2 className="card-title text-lg truncate">{product.name}</h2>
           <p className="text-sm text-gray-500 mb-2">{product.category}</p>
           <div className="flex items-center justify-between">
-            <span className="font-bold text-green-600">₹ {product.price}</span>
+            <span className="font-bold">₹ {product.price}</span>
             <span className="badge badge-outline">
               {product.countInStock} in stock
             </span>
