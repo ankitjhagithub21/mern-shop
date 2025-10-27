@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const nodemailer = require('nodemailer')
+const sendEmail = require("../utils/sendEmail");
+
 // @desc    Register new user
 // @route   POST /api/auth/register
 // @access  Public
@@ -127,17 +128,9 @@ const requestPasswordReset = async (req, res, next) => {
 
     const resetURL = `${process.env.CLIENT_URL}/reset-password?id=${user._id}&token=${token}`;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
+    
 
     const mailOptions = {
-      to: user.email,
-      from: process.env.EMAIL,
       subject: "Password Reset Request",
       text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
       Please click on the following link, or paste this into your browser to complete the process:\n\n
@@ -145,7 +138,7 @@ const requestPasswordReset = async (req, res, next) => {
       If you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await sendEmail(user.email, mailOptions.subject,mailOptions.text)
 
     res
       .status(200)
