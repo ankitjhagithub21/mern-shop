@@ -1,5 +1,7 @@
 const Product = require('../models/Product');
 
+const { deleteImage, uploadImage } = require('../utils/uploadImage'); // add this import
+
 // @desc    Get all products
 // @route   GET /api/products
 // @access  Public
@@ -32,21 +34,40 @@ const getProductById = async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = async (req, res) => {
+
   try {
+    
+    const {name,description, price, category, rating, numReviews, countInStock} = req.body
+
+    if(!name || !description || !price || !category){
+       return res.status(400).json({message:"Name, description, price and category are required.", success:false})
+    }
+
+    let thumbnailUrl;
+    if(req.file){
+        thumbnailUrl = await uploadImage(req.file);
+        if(!thumbnailUrl){
+          return res.status(400).json({message:"Error in uploading image.", success:false})
+        }
+    }else{
+      return res.status(400).json({message:"Please upload product thumbnail.",success:false})
+    }
+
     const product = new Product({
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      thumbnail: req.body.thumbnail,
-      category: req.body.category,
-      countInStock: req.body.countInStock,
-      rating: req.body.rating || 0,
-      numReviews: req.body.numReviews || 0,
-      user: req.user._id,
-    });
+      name,
+      price,
+      category,
+      description,
+      rating,
+      numReviews,
+      countInStock,
+      thumbnail:thumbnailUrl,
+      user:req.user._id
+    })
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
+    console.log("error:",error.message)
     res.status(400).json({ message: 'Invalid product data' });
   }
 };
@@ -81,6 +102,14 @@ const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (product) {
+      // Delete thumbnail image if exists
+      if (product.thumbnail) {
+        try {
+          await deleteImage(product.thumbnail);
+        } catch (err) {
+          console.log('Error deleting thumbnail:', err.message);
+        }
+      }
       await product.deleteOne();
       res.json({ message: 'Product removed' });
     } else {
