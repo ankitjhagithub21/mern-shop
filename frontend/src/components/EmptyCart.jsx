@@ -35,7 +35,7 @@ const EmptyCart = () => {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <button
-              className="btn btn-primary btn-wide"
+              className="btn btn-neutral btn-wide"
               onClick={() => navigate("/")}
             >
               Start Shopping

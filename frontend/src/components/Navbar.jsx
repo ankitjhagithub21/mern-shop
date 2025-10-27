@@ -104,10 +104,10 @@ const Navbar = () => {
               <li>
                 <Link to="/profile" className="justify-between">
                   Profile
-                  <span className="badge">New</span>
+                  
                 </Link>
               </li>
-              <li>
+              <li className='my-2'>
                 <Link to="/cart">Cart</Link>
               </li>
               <li>

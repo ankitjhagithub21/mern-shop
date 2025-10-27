@@ -130,7 +130,7 @@ const ProfilePage = () => {
     const statusClasses = {
       pending: 'badge-warning',
       processing: 'badge-info',
-      shipped: 'badge-primary',
+      shipped: 'badge-neutral',
       delivered: 'badge-success',
       cancelled: 'badge-error'
     }
@@ -299,7 +299,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="card-actions justify-end">
-                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                  <button type="submit" className="btn btn-neutral" disabled={loading}>
                     {loading && <span className="loading loading-spinner"></span>}
                     Update Profile
                   </button>
@@ -393,7 +393,7 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div className="card-actions justify-end">
-                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                  <button type="submit" className="btn btn-neutral" disabled={loading}>
                     {loading && <span className="loading loading-spinner"></span>}
                     Change Password
                   </button>
