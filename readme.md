@@ -187,31 +187,15 @@ npm run dev
 3. Commit changes: `git commit -m 'Add feature'`
 4. Push to branch: `git push origin feature-name`
 5. Submit pull request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+__
 
 ## 👨‍💻 Author
 
 **Ankit Kumar Jha**
 - GitHub: [@ankitjhagithub21](https://github.com/ankitjhagithub21)
-- LinkedIn: [Your LinkedIn Profile]
-
+- LinkedIn: [@ankitjha3731](https://linkedln.com/ankitjha3731)
 ---
 
-## 🙏 Acknowledgments
-
-- Thanks to the MERN stack community
-- Stripe for payment processing
-- MongoDB Atlas for database hosting
-- Vercel for deployment
-
----
 
 ⭐ **If you like this project, please give it a star!** ⭐
 
